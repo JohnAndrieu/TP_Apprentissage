@@ -1,0 +1,132 @@
+
+###### ###### KMeans 2d-4c-no4 nombre clusters fixé ###### ######
+
+Temps d'execution Kmeans- 2d-4c-no4 [4] = 0.062701
+Coefficient de Silhouette = 0.617740
+Coefficient de Davies = 0.449330
+
+###### ###### KMeans- 2d-4c-no4 ###### ######
+
+Temps d'execution Kmeans- 2d-4c-no4 [2] = 0.044200
+Coefficient de Silhouette = 0.526186
+Coefficient de Davies = 0.765565
+Temps d'execution Kmeans- 2d-4c-no4 [3] = 0.047050
+Coefficient de Silhouette = 0.586734
+Coefficient de Davies = 0.610783
+Temps d'execution Kmeans- 2d-4c-no4 [4] = 0.053909
+Coefficient de Silhouette = 0.617740
+Coefficient de Davies = 0.449330
+Temps d'execution Kmeans- 2d-4c-no4 [5] = 0.063711
+Coefficient de Silhouette = 0.574818
+Coefficient de Davies = 0.591934
+Temps d'execution Kmeans- 2d-4c-no4 [6] = 0.082512
+Coefficient de Silhouette = 0.576998
+Coefficient de Davies = 0.638459
+Temps d'execution Kmeans- 2d-4c-no4 [7] = 0.096360
+Coefficient de Silhouette = 0.553617
+Coefficient de Davies = 0.687045
+Temps d'execution Kmeans- 2d-4c-no4 [8] = 0.113077
+Coefficient de Silhouette = 0.541114
+Coefficient de Davies = 0.713681
+Temps d'execution Kmeans- 2d-4c-no4 [9] = 0.126790
+Coefficient de Silhouette = 0.542005
+Coefficient de Davies = 0.719551
+
+###### ###### KMeans long1 nombre clusters fixé ###### ######
+
+Temps d'execution Kmeans- long1 [2] = 0.054484
+Coefficient de Silhouette = 0.429371
+Coefficient de Davies = 0.894982
+
+###### ###### KMeans- long1 ###### ######
+
+Temps d'execution Kmeans- long1 [2] = 0.043739
+Coefficient de Silhouette = 0.429371
+Coefficient de Davies = 0.894982
+Temps d'execution Kmeans- long1 [3] = 0.092368
+Coefficient de Silhouette = 0.349554
+Coefficient de Davies = 1.033990
+Temps d'execution Kmeans- long1 [4] = 0.072768
+Coefficient de Silhouette = 0.420945
+Coefficient de Davies = 0.762030
+Temps d'execution Kmeans- long1 [5] = 0.109114
+Coefficient de Silhouette = 0.447788
+Coefficient de Davies = 0.766011
+Temps d'execution Kmeans- long1 [6] = 0.169264
+Coefficient de Silhouette = 0.467026
+Coefficient de Davies = 0.721417
+Temps d'execution Kmeans- long1 [7] = 0.135513
+Coefficient de Silhouette = 0.489154
+Coefficient de Davies = 0.668669
+Temps d'execution Kmeans- long1 [8] = 0.124940
+Coefficient de Silhouette = 0.480356
+Coefficient de Davies = 0.643325
+Temps d'execution Kmeans- long1 [9] = 0.115615
+Coefficient de Silhouette = 0.470735
+Coefficient de Davies = 0.628699
+
+###### ###### KMeans blobs nombre clusters fixé ###### ######
+
+Temps d'execution Kmeans- blobs [3] = 0.027442
+Coefficient de Silhouette = 0.559522
+Coefficient de Davies = 0.593741
+
+###### ###### KMeans- blobs ###### ######
+
+Temps d'execution Kmeans- blobs [2] = 0.027777
+Coefficient de Silhouette = 0.483101
+Coefficient de Davies = 0.793010
+Temps d'execution Kmeans- blobs [3] = 0.036530
+Coefficient de Silhouette = 0.559522
+Coefficient de Davies = 0.593741
+Temps d'execution Kmeans- blobs [4] = 0.058309
+Coefficient de Silhouette = 0.459677
+Coefficient de Davies = 0.844559
+Temps d'execution Kmeans- blobs [5] = 0.067915
+Coefficient de Silhouette = 0.365695
+Coefficient de Davies = 0.971928
+Temps d'execution Kmeans- blobs [6] = 0.071516
+Coefficient de Silhouette = 0.328911
+Coefficient de Davies = 1.102395
+Temps d'execution Kmeans- blobs [7] = 0.087496
+Coefficient de Silhouette = 0.334813
+Coefficient de Davies = 0.983612
+Temps d'execution Kmeans- blobs [8] = 0.081740
+Coefficient de Silhouette = 0.340613
+Coefficient de Davies = 0.932396
+Temps d'execution Kmeans- blobs [9] = 0.094274
+Coefficient de Silhouette = 0.341038
+Coefficient de Davies = 0.906356
+
+###### ###### KMeans smile2 nombre clusters fixé ###### ######
+
+Temps d'execution Kmeans- smile2 [4] = 0.071376
+Coefficient de Silhouette = 0.534322
+Coefficient de Davies = 0.673559
+
+###### ###### KMeans- smile2 ###### ######
+
+Temps d'execution Kmeans- smile2 [2] = 0.044741
+Coefficient de Silhouette = 0.501442
+Coefficient de Davies = 0.884961
+Temps d'execution Kmeans- smile2 [3] = 0.060077
+Coefficient de Silhouette = 0.575413
+Coefficient de Davies = 0.602345
+Temps d'execution Kmeans- smile2 [4] = 0.075836
+Coefficient de Silhouette = 0.534374
+Coefficient de Davies = 0.673648
+Temps d'execution Kmeans- smile2 [5] = 0.099349
+Coefficient de Silhouette = 0.540460
+Coefficient de Davies = 0.667140
+Temps d'execution Kmeans- smile2 [6] = 0.112099
+Coefficient de Silhouette = 0.541367
+Coefficient de Davies = 0.673845
+Temps d'execution Kmeans- smile2 [7] = 0.124055
+Coefficient de Silhouette = 0.548179
+Coefficient de Davies = 0.657439
+Temps d'execution Kmeans- smile2 [8] = 0.135452
+Coefficient de Silhouette = 0.570948
+Coefficient de Davies = 0.649641
+Temps d'execution Kmeans- smile2 [9] = 0.144482
+Coefficient de Silhouette = 0.581828
+Coefficient de Davies = 0.592249
