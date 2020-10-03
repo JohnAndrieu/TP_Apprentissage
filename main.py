@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
+from sklearn.cluster import DBSCAN
 from sklearn import metrics
 from sklearn.metrics import davies_bouldin_score
 import time
@@ -78,7 +79,7 @@ def iter_KMeansClustering(data, name):
     plt.figure()
     for iter_cluster in range(2, 10):
         run_KMeans(iter_cluster, data, "Kmeans- " + name + " [" + str(iter_cluster) + "]")
-    plt.savefig("./metrics/kmeans/"+name)
+    plt.savefig("./metrics/kmeans/" + name)
 
 
 def Clustering_KMeans():
@@ -157,7 +158,7 @@ def iter_AggloClustering(data, linkage, name):
     for iter_cluster in range(2, 10):
         run_AggloClustering(iter_cluster, data, linkage,
                             "Agglomeratif " + linkage + "- " + name + " [" + str(iter_cluster) + "] [" + linkage + "]")
-    plt.savefig("./metrics/agglomeratif/"+name)
+    plt.savefig("./metrics/agglomeratif/" + name)
 
 
 def runAndSave_Agglo(nb_cluster, data, linkage, name, x, y, name_fig):
@@ -206,11 +207,43 @@ def Clustering_Agglomeratif():
     iter_AggloClustering(_blobs_train, "ward", "blobs")
 
 
+def run_DBSCANClustering(distance, min_pts, data_train, label):
+    tmps1 = time.time()
+    dbscan = DBSCAN(eps=distance, min_sample=min_pts)
+    dbscan.fit(data_train)
+    tmps2 = time.time() - tmps1
+    f = open("./execution_time/dbscan_clustering/dbscan_clustering.txt", "a")
+    msg_time = "Temps d'execution " + label + " = %f\n" % tmps2
+    f.write(msg_time)
+    f.close()
+    return dbscan
+
+
+def runAndSave_DBSCAN(distance, min_pts, data, name, x, y, name_fig):
+    dbscan = run_DBSCANClustering(distance, min_pts, data, "DBSCAN - " + name + " - dt[" + str(distance)
+                                  + "] pts[" + str(min_pts) + "]")
+    save_fig(x, y, dbscan.labels_, "./dbscan_graph/" + name_fig)
+
+
+def Clustering_DBSCAN():
+    erase_file("./execution_time/dbscan_clustering/dbscan_clustering.txt")
+    insert_section("./execution_time/dbscan_clustering/dbscan_clustering.txt", "DBSCAN 2d-4c-no4"
+                   + " distance et nombre de points fixés")
+
+    data_2d4c = arff.loadarff(open(file_2d4c, 'r'))
+    _2d4cno4 = np.array(data_2d4c, dtype=object)[0]
+    _2d4cno4_train = list(zip(_2d4cno4['a0'], _2d4cno4['a1']))
+    distance = 5
+    min_pts = 0.5
+
+    runAndSave_DBSCAN(distance, min_pts, _2d4cno4_train, "2dc4", _2d4cno4['a0'], _2d4cno4['a1'], "2dc4")
+
+
 def main():
     # exo1()
     # Clustering_KMeans()
-    Clustering_Agglomeratif()
-
+    # Clustering_Agglomeratif()
+    Clustering_DBSCAN()
 
 
 if __name__ == "__main__":
