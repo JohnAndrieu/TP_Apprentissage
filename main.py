@@ -1,12 +1,17 @@
+import numpy
 from scipy.io import arff
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.cluster import AgglomerativeClustering
 from sklearn.cluster import DBSCAN
+import hdbscan
 from sklearn import metrics
+from sklearn.datasets import make_blobs
 from sklearn.metrics import davies_bouldin_score
 import time
+
+from sklearn.preprocessing import StandardScaler
 
 file_smile = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/smile1.arff"
 file_2d3c = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/2d-3c-no123.arff"
@@ -15,7 +20,7 @@ file_donut = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datas
 file_long1 = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/long1.arff"
 file_blobs = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/blobs.arff"
 file_smile2 = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/smile2.arff"
-
+file_2sp2glob = "/Users/jonathan/SDBD/clustering-benchmark/src/main/resources/datasets/artificial/2sp2glob.arff"
 
 def save_fig(x, y, labels, name):
     plt.figure()
@@ -209,12 +214,18 @@ def Clustering_Agglomeratif():
 
 def run_DBSCANClustering(distance, min_pts, data_train, label):
     tmps1 = time.time()
-    dbscan = DBSCAN(eps=distance, min_sample=min_pts)
-    dbscan.fit(data_train)
+    data_train = StandardScaler().fit_transform(data_train)
+    dbscan = DBSCAN(eps=distance, min_samples=min_pts).fit(data_train)
     tmps2 = time.time() - tmps1
+    labels = dbscan.labels_
+    # Number of clusters in labels, ignoring noise if present.
+    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    n_noise_ = list(labels).count(-1)
+    msg_clusters = 'Estimated number of clusters: %d' % n_clusters_
+    msg_noise = 'Estimated number of noise points: %d' % n_noise_
     f = open("./execution_time/dbscan_clustering/dbscan_clustering.txt", "a")
     msg_time = "Temps d'execution " + label + " = %f\n" % tmps2
-    f.write(msg_time)
+    f.write(msg_time + msg_clusters + "\n" + msg_noise + "\n")
     f.close()
     return dbscan
 
@@ -223,6 +234,17 @@ def runAndSave_DBSCAN(distance, min_pts, data, name, x, y, name_fig):
     dbscan = run_DBSCANClustering(distance, min_pts, data, "DBSCAN - " + name + " - dt[" + str(distance)
                                   + "] pts[" + str(min_pts) + "]")
     save_fig(x, y, dbscan.labels_, "./dbscan_graph/" + name_fig)
+    print("./dbscan_graph/" + name_fig)
+
+
+def iter_DBSCANClustering(data, name, x, y):
+    insert_section("./execution_time/dbscan_clustering/dbscan_clustering.txt", "DBSCAN Clustering [" + name + "]")
+    for distance in numpy.linspace(0.1, 1, 10):
+        print(distance)
+        for samples in range(2, 10):
+            distance = round(distance, 1)
+            runAndSave_DBSCAN(distance, samples, data, name, x, y, name + "_" + "dt[" + str(distance).replace('.', ',')
+                                + "]_pts[" + str(samples) + "]")
 
 
 def Clustering_DBSCAN():
@@ -236,14 +258,86 @@ def Clustering_DBSCAN():
     distance = 5
     min_pts = 0.5
 
-    runAndSave_DBSCAN(distance, min_pts, _2d4cno4_train, "2dc4", _2d4cno4['a0'], _2d4cno4['a1'], "2dc4")
+    runAndSave_DBSCAN(distance, min_pts, _2d4cno4_train, "2dc4", _2d4cno4['a0'], _2d4cno4['a1'], "2dc4_dbscan")
+
+    insert_section("./execution_time/dbscan_clustering/dbscan_clustering.txt", "DBSCAN blobs"
+                   + " distance et nombre de points fixés")
+
+    data_blobs = arff.loadarff(open(file_blobs, 'r'))
+    _blobs = np.array(data_blobs, dtype=object)[0]
+    _blobs_train = list(zip(_blobs['x'], _blobs['y']))
+    distance = 0.35
+    min_pts = 14
+
+    runAndSave_DBSCAN(distance, min_pts, _blobs_train, "blobs", _blobs['x'], _blobs['y'], "blobs_dbscan")
+
+    #iter_DBSCANClustering(_blobs_train, "blobs", _blobs['x'], _blobs['y'])
+
+    insert_section("./execution_time/dbscan_clustering/dbscan_clustering.txt", "DBSCAN smile2"
+                   + " distance et nombre de points fixés")
+
+    smile2_data = arff.loadarff(open(file_smile2, 'r'))
+    _smile2 = np.array(smile2_data, dtype=object)[0]
+    smile2_train = list(zip(_smile2['a0'], _smile2['a1']))
+    distance = 5
+    min_pts = 0.5
+
+    runAndSave_DBSCAN(distance, min_pts, smile2_train, "smile2", _smile2['a0'], _smile2['a1'], "smile2_dbscan")
+
+    iter_DBSCANClustering(smile2_train, "smile2", _smile2['a0'], _smile2['a1'])
+
+
+def run_HDBSCANClustering(data_train, label):
+    tmps1 = time.time()
+    data_train = StandardScaler().fit_transform(data_train)
+    hdb = hdbscan.HDBSCAN(min_cluster_size=7).fit(data_train)
+    tmps2 = time.time() - tmps1
+    labels = hdb.labels_
+    n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
+    n_noise_ = list(labels).count(-1)
+    msg_clusters = 'Estimated number of clusters: %d' % n_clusters_
+    msg_noise = 'Estimated number of noise points: %d' % n_noise_
+    f = open("./execution_time/hdbscan_clustering/hdbscan_clustering.txt", "a")
+    msg_time = "Temps d'execution " + label + " = %f\n" % tmps2
+    f.write(msg_time + msg_clusters + "\n" + msg_noise + "\n")
+    f.close()
+    return hdb
+
+
+def runAndSave_HDBSCAN(data, name, x, y, name_fig):
+    dbscan = run_HDBSCANClustering(data, "HDBSCAN - " + name)
+    save_fig(x, y, dbscan.labels_, "./hdbscan_graph/" + name_fig)
+    print("./hdbscan_graph/" + name_fig)
+
+
+def Clustering_HDBSCAN():
+    erase_file("./execution_time/hdbscan_clustering/hdbscan_clustering.txt")
+    insert_section("./execution_time/hdbscan_clustering/hdbscan_clustering.txt", "HDBSCAN blobs"
+                   + " distance et nombre de points fixés")
+
+    data_blobs = arff.loadarff(open(file_blobs, 'r'))
+    _blobs = np.array(data_blobs, dtype=object)[0]
+    _blobs_train = list(zip(_blobs['x'], _blobs['y']))
+
+    runAndSave_HDBSCAN(_blobs_train, "2dc4", _blobs['x'], _blobs['y'], "blobs_hdbscan")
+
+    insert_section("./execution_time/hdbscan_clustering/hdbscan_clustering.txt", "HDBSCAN blobs"
+                   + " distance et nombre de points fixés")
+
+    sp2glob_data = arff.loadarff(open(file_2sp2glob, 'r'))
+    _sp2glob = np.array(sp2glob_data, dtype=object)[0]
+    sp2glob_train = list(zip(_sp2glob['x'], _sp2glob['y']))
+
+    runAndSave_HDBSCAN(sp2glob_train, "smile2", _sp2glob['x'], _sp2glob['y'], "sp2glob_hdbscan")
 
 
 def main():
     # exo1()
     # Clustering_KMeans()
     # Clustering_Agglomeratif()
-    Clustering_DBSCAN()
+    #Clustering_DBSCAN()
+    # dubug_DBSCAN()
+    Clustering_HDBSCAN()
 
 
 if __name__ == "__main__":
